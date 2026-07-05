@@ -1,105 +1,116 @@
-# Example: Customer Segmentation Explorer
+# AFAS MCP Server – HR & Klantdata Demo
 
-A demo MCP App that displays customer data as an interactive scatter/bubble chart with segment-based clustering. Users can explore different metrics, filter by segment, and click to see detailed customer information.
+Een demo MCP App die AFAS HR- en klantdata visualiseert via drie interactieve tools. De server biedt een klantoverzicht met segmentatie, verlofsaldo-rapportages per afdeling en een gedetailleerde verlofkaart per medewerker.
 
-<table>
-  <tr>
-    <td><a href="https://apps.extensions.modelcontextprotocol.io/screenshots/customer-segmentation-server/01-account-age-revenue.png"><img src="https://apps.extensions.modelcontextprotocol.io/screenshots/customer-segmentation-server/01-account-age-revenue.png" alt="Account age vs revenue" width="100%"></a></td>
-    <td><a href="https://apps.extensions.modelcontextprotocol.io/screenshots/customer-segmentation-server/02-tickets-nps-engagement.png"><img src="https://apps.extensions.modelcontextprotocol.io/screenshots/customer-segmentation-server/02-tickets-nps-engagement.png" alt="Tickets, NPS, engagement" width="100%"></a></td>
-    <td><a href="https://apps.extensions.modelcontextprotocol.io/screenshots/customer-segmentation-server/07-age-engagement-revenue.png"><img src="https://apps.extensions.modelcontextprotocol.io/screenshots/customer-segmentation-server/07-age-engagement-revenue.png" alt="Age, engagement, revenue" width="100%"></a></td>
-  </tr>
-</table>
+## Tools
 
-## MCP Client Configuration
+| Tool | Omschrijving |
+|---|---|
+| `get-customer-data` | AFAS klantoverzicht als bubble chart, filteren op segment |
+| `get-verlof-saldo` | Verlofsaldo-rapportage per medewerker, filteren op afdeling |
+| `get-verlofkaart` | Gedetailleerde verlofkaart per medewerker met alle verlofpotten en boekingen |
 
-Add to your MCP client configuration (stdio transport):
+## MCP Client configuratie
+
+Voeg het volgende toe aan je MCP client configuratie (stdio transport):
 
 ```json
 {
   "mcpServers": {
-    "customer-segmentation": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "--silent",
-        "--registry=https://registry.npmjs.org/",
-        "@modelcontextprotocol/server-customer-segmentation",
-        "--stdio"
-      ]
+    "afas-mcp-server": {
+      "command": "node",
+      "args": ["dist/index.js", "--stdio"]
     }
   }
 }
 ```
 
-### Local Development
-
-To test local modifications, use this configuration (replace `~/code/ext-apps` with your clone path):
+### HTTP transport (lokaal)
 
 ```json
 {
   "mcpServers": {
-    "customer-segmentation": {
-      "command": "bash",
-      "args": [
-        "-c",
-        "cd ~/code/ext-apps/examples/customer-segmentation-server && npm run build >&2 && node dist/index.js --stdio"
-      ]
+    "afas-mcp-server": {
+      "url": "http://localhost:3000/mcp"
     }
   }
 }
 ```
 
-## Features
+## Functies
 
-- **Interactive Scatter Plot**: Bubble chart visualization using Chart.js with configurable X/Y axes
-- **Segment Clustering**: 250 customers grouped into 4 segments (Enterprise, Mid-Market, SMB, Startup)
-- **Axis Selection**: Choose from 6 metrics for each axis (Revenue, Employees, Account Age, Engagement, Tickets, NPS)
-- **Size Mapping**: Optional bubble sizing by a third metric for additional data dimension
-- **Legend Filtering**: Click segment pills to show/hide customer groups
-- **Detail Panel**: Hover or click customers to see name, segment, revenue, engagement, and NPS
-- **Theme Support**: Adapts to light/dark mode preferences
+### Klantoverzicht (`get-customer-data`)
+- **Bubble chart**: interactieve Chart.js visualisatie met instelbare X/Y-assen
+- **Segmenten**: klanten gegroepeerd in Enterprise, MKB, Overheid, Zorg & Onderwijs, Startup
+- **Assen**: kies uit contractwaarde, gebruikers, accountleeftijd, tevredenheid, supporttickets, NPS
+- **Legenda**: klik op segmentpills om groepen aan/uit te zetten
+- **Detailpanel**: hover of klik op een klant voor naam, segment, contractwaarde en NPS
 
-## Running
+### Verlofsaldo rapportage (`get-verlof-saldo`)
+- Overzicht van alle medewerkers met saldi per verlofsoort (Vakantie, ADV, Bijzonder verlof, Zorgverlof, Compensatie-uren)
+- Filteren op afdeling: Sales, IT, Finance, HR, Operations, Marketing
+- Afdelingsoverzicht met totalen en gemiddeld saldo
 
-1. Install dependencies:
+### Verlofkaart (`get-verlofkaart`)
+- Gedetailleerde verlofkaart per medewerker (opzoeken op personeelsnummer)
+- Alle verlofpotten met beginsaldo, opgenomen uren, correcties en huidig saldo
+- Individuele boekingen per verlofpot met begin-/einddatum
+- Signalering van verlofpotten die dit kalenderjaar verlopen
+
+## Opstarten
+
+1. Installeer dependencies:
 
    ```bash
    npm install
    ```
 
-2. Build and start the server:
+2. Bouw en start de server:
 
    ```bash
-   npm run start:http  # for Streamable HTTP transport
-   # OR
-   npm run start:stdio  # for stdio transport
+   npm run start:http   # Streamable HTTP transport
+   # OF
+   npm run start:stdio  # stdio transport
    ```
 
-3. View using the [`basic-host`](https://github.com/modelcontextprotocol/ext-apps/tree/main/examples/basic-host) example or another MCP Apps-compatible host.
+3. Open in een MCP Apps-compatibele client of gebruik de meegeleverde `basic-host`.
 
-## Architecture
+## Architectuur
 
 ### Server (`server.ts`)
 
-Exposes a single `get-customer-data` tool that returns:
+Registreert drie tools met bijbehorende UI-resources:
 
-- Array of 250 generated customer records with segment assignments
-- Segment summary with counts and colors for each group
-- Optional segment filter parameter
+- **`get-customer-data`** – geeft 250 gegenereerde klantrecords terug, optioneel gefilterd op segment
+- **`get-verlof-saldo`** – geeft medewerkerdata met verlofsaldi terug, optioneel gefilterd op afdeling
+- **`get-verlofkaart`** – geeft de volledige verlofkaart voor één medewerker terug op basis van personeelsnummer
 
-The tool is linked to a UI resource via `_meta.ui.resourceUri`.
+Elke tool is gekoppeld aan een HTML UI-resource via `_meta.ui.resourceUri`.
 
-### App (`src/mcp-app.ts`)
+### Apps (`src/`)
 
-- Uses Chart.js bubble chart for the visualization
-- Fetches data once on connection
-- Dropdown controls update chart axes and bubble sizing
-- Custom legend with clickable segment toggles
-- Detail panel updates on hover/click interactions
+| Bestand | Omschrijving |
+|---|---|
+| `mcp-app.ts` | Klantoverzicht – bubble chart met Chart.js |
+| `afas-verlof.ts` | Verlofsaldo rapportage – tabel + afdelingsoverzicht |
+| `verlofkaart.ts` | Verlofkaart per medewerker – potten, boekingen en saldi |
 
-### Data Generator (`src/data-generator.ts`)
+### Data generators (`src/`)
 
-- Generates realistic customer data with Gaussian clustering around segment centers
-- Each segment has characteristic ranges for revenue, employees, engagement, etc.
-- Company names generated from word-list combinations (e.g., "Apex Data Corp")
-- Data cached in memory for consistency across requests
+| Bestand | Omschrijving |
+|---|---|
+| `data-generator.ts` | Genereert 250 AFAS-klanten met segmentdata |
+| `data-generator-verlof.ts` | Genereert medewerkers met verlofsaldi per afdeling |
+| `data-generator-verlofkaart.ts` | Genereert gedetailleerde verlofkaartdata per medewerker |
+
+## Voorbeeld prompts
+
+Zie [VOORBEELD-PROMPTS.md](VOORBEELD-PROMPTS.md) voor kant-en-klare prompts voor alle drie de tools.
+
+## Tech stack
+
+- **MCP SDK** – `@modelcontextprotocol/sdk` + `@modelcontextprotocol/ext-apps`
+- **Frontend** – Vite + TypeScript (bundled als single-file HTML)
+- **Visualisatie** – Chart.js
+- **Backend** – Node.js + Express (HTTP) of stdio transport
+- **Validatie** – Zod
