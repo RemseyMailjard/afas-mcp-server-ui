@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>AFAS – Verlofsaldo Rapportage</title>
+</head>
+<body>
+  <div id="app">
+    <!-- header -->
+    <header id="afas-header">
+      <div class="afas-logo">
+        <span class="afas-logo-icon">&#9632;</span>
+        <span class="afas-logo-text">AFAS</span>
+      </div>
+      <div class="header-title">
+        <h1>Verlofsaldo Rapportage</h1>
+        <span id="rapport-periode">Boekjaar 2025</span>
+      </div>
+      <div class="header-actions">
+        <select id="filter-afdeling" class="afas-select">
+          <option value="">Alle afdelingen</option>
+          <option value="Sales">Sales</option>
+          <option value="IT">IT</option>
+          <option value="Finance">Finance</option>
+          <option value="HR">HR</option>
+          <option value="Operations">Operations</option>
+          <option value="Marketing">Marketing</option>
+        </select>
+        <select id="filter-soort" class="afas-select">
+          <option value="">Alle verlofsoorten</option>
+          <option value="Vakantie">Vakantie</option>
+          <option value="ADV">ADV</option>
+          <option value="Bijzonder verlof">Bijzonder verlof</option>
+          <option value="Zorgverlof">Zorgverlof</option>
+          <option value="Compensatie-uren">Compensatie-uren</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- KPI cards -->
+    <section id="kpi-section" class="kpi-grid"></section>
+
+    <!-- Afdeling bar chart -->
+    <section class="chart-section">
+      <h2 class="section-title">Vakantiesaldo per afdeling (gemiddeld uren)</h2>
+      <div id="afd-chart" class="afd-chart"></div>
+    </section>
+
+    <!-- Medewerker tabel -->
+    <section class="table-section">
+      <h2 class="section-title">
+        Medewerker verlofsaldi
+        <span id="row-count" class="row-count"></span>
+      </h2>
+      <div class="table-wrapper">
+        <table id="verlof-table" class="afas-table">
+          <thead>
+            <tr>
+              <th data-sort="personeelsnummer">Nr</th>
+              <th data-sort="naam">Naam</th>
+              <th data-sort="afdeling">Afdeling</th>
+              <th data-sort="functie">Functie</th>
+              <th data-sort="contractUren">Contract</th>
+              <th data-sort="soort">Verlofsoort</th>
+              <th data-sort="opgebouwd" class="num-col">Opgebouwd</th>
+              <th data-sort="opgenomen" class="num-col">Opgenomen</th>
+              <th data-sort="saldo" class="num-col">Saldo</th>
+              <th data-sort="verloopt" class="num-col">Verloopt</th>
+            </tr>
+          </thead>
+          <tbody id="verlof-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- loading / error -->
+    <div id="loading" class="loading-state">Verlofdata laden...</div>
+    <div id="error-state" class="error-state" style="display:none"></div>
+  </div>
+  <script type="module" src="./src/afas-verlof.ts"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>AFAS – Klantoverzicht</title>
+</head>
+<body>
+  <main class="main">
+    <header class="header">
+      <div class="afas-brand">
+        <span class="afas-brand-icon">&#9632;</span>
+        <span class="afas-brand-name">AFAS</span>
+      </div>
+      <h1 class="title">Klantoverzicht</h1>
+    </header>
+
+    <section class="controls-section">
+      <label class="select-label">
+        X:
+        <select id="x-axis" class="select">
+          <option value="annualRevenue">Contractwaarde (€)</option>
+          <option value="employeeCount">Gebruikers</option>
+          <option value="accountAge">Klantduur (mnd)</option>
+          <option value="engagementScore">Tevredenheid</option>
+          <option value="supportTickets">Supporttickets</option>
+          <option value="nps">NPS</option>
+        </select>
+      </label>
+      <label class="select-label">
+        Y:
+        <select id="y-axis" class="select">
+          <option value="annualRevenue">Contractwaarde (€)</option>
+          <option value="employeeCount">Gebruikers</option>
+          <option value="accountAge">Klantduur (mnd)</option>
+          <option value="engagementScore" selected>Tevredenheid</option>
+          <option value="supportTickets">Supporttickets</option>
+          <option value="nps">NPS</option>
+        </select>
+      </label>
+      <label class="select-label">
+        Size:
+        <select id="size-metric" class="select">
+          <option value="off">Uit</option>
+          <option value="annualRevenue">Contractwaarde (€)</option>
+          <option value="employeeCount">Gebruikers</option>
+          <option value="accountAge">Klantduur (mnd)</option>
+          <option value="engagementScore">Tevredenheid</option>
+          <option value="supportTickets">Supporttickets</option>
+          <option value="nps">NPS</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="chart-section">
+      <div class="chart-container">
+        <canvas id="scatter-chart"></canvas>
+      </div>
+    </section>
+
+    <section class="legend-section">
+      <div id="legend" class="legend"></div>
+    </section>
+
+    <section class="detail-section">
+      <div id="detail-panel" class="detail-panel">
+        <span class="detail-placeholder">Beweeg over een punt voor details</span>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./src/mcp-app.ts"></script>
+</body>
+</html>

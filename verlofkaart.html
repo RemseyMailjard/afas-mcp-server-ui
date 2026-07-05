@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>AFAS – Verlofkaart</title>
+</head>
+<body>
+  <div id="app">
+    <!-- AFAS topbar + header -->
+    <div class="topbar"></div>
+    <header class="vk-header">
+      <div class="vk-header-left">
+        <div class="afas-logo"><span class="afas-logo-sq">&#9632;</span> AFAS</div>
+        <div class="vk-title">
+          <h1>Verlofkaart</h1>
+          <span id="vk-periode" class="vk-subtitle">Jaar 2026</span>
+        </div>
+      </div>
+      <div class="vk-header-right">
+        <label class="vk-label" for="mdw-select">Medewerker</label>
+        <select id="mdw-select" class="vk-select"></select>
+        <div class="toggle-group" id="unit-toggle" title="Weergave wisselen">
+          <button class="toggle-btn active" data-unit="uren">Uren</button>
+          <button class="toggle-btn" data-unit="dagen">Dagen</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Employee info bar -->
+    <div id="emp-bar" class="emp-bar">
+      <div class="emp-field"><span class="emp-label">Medewerker</span><strong id="emp-naam">—</strong></div>
+      <div class="emp-field"><span class="emp-label">In dienst</span><strong id="emp-dienst">—</strong></div>
+      <div class="emp-field"><span class="emp-label">Dienstverband</span><strong id="emp-fte">—</strong></div>
+      <div class="emp-field"><span class="emp-label">Werkgever</span><strong id="emp-werkgever">—</strong></div>
+      <div class="emp-field"><span class="emp-label">Norm</span><strong id="emp-norm">—</strong></div>
+    </div>
+
+    <!-- KPI strip -->
+    <div id="kpi-strip" class="kpi-strip"></div>
+
+    <!-- Main table -->
+    <div class="table-wrapper">
+      <table id="vk-table" class="vk-table">
+        <thead>
+          <tr>
+            <th class="col-soort">Verlofsoort</th>
+            <th class="col-num">Meegenomen</th>
+            <th class="col-num">Nieuw recht</th>
+            <th class="col-num">Beginsaldo</th>
+            <th class="col-num">Opgenomen</th>
+            <th class="col-num">Correcties</th>
+            <th class="col-num col-saldo">Saldo</th>
+            <th class="col-verloop">Verloopt op</th>
+          </tr>
+        </thead>
+        <tbody id="vk-tbody"></tbody>
+        <tfoot id="vk-tfoot"></tfoot>
+      </table>
+    </div>
+
+    <!-- Boekingen detail (shown on row click) -->
+    <div id="boekingen-panel" class="boekingen-panel" style="display:none">
+      <div class="bp-header">
+        <span id="bp-title" class="bp-title"></span>
+        <button id="bp-close" class="bp-close" aria-label="Sluiten">&times;</button>
+      </div>
+      <table class="bp-table">
+        <thead><tr><th>Begin</th><th>Eind</th><th class="col-num">Uren</th><th class="col-num">Dagen</th></tr></thead>
+        <tbody id="bp-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- Toelichting -->
+    <div id="toelichting" class="toelichting" style="display:none">
+      <h3 class="toel-title">Toelichting</h3>
+      <ul id="toel-list"></ul>
+    </div>
+
+    <footer class="vk-footer">
+      <span id="footer-bron">Bron: AFAS – verlofkaart &amp; saldo-overzicht</span>
+      <span id="footer-date"></span>
+    </footer>
+
+    <div id="loading" class="loading-state">Verlofkaart laden…</div>
+    <div id="error-state" class="error-state" style="display:none"></div>
+  </div>
+  <script type="module" src="./src/verlofkaart.ts"></script>
+</body>
+</html>

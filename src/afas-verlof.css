@@ -1,0 +1,304 @@
+/* ── AFAS Verlofsaldo Rapportage Styles ─────────────────────────────────────── */
+
+/* AFAS brand color */
+:root {
+  --afas-blue:      #004C8A;
+  --afas-blue-light:#0066BB;
+  --afas-accent:    #E8F0F8;
+  --afas-green:     #16a34a;
+  --afas-red:       #dc2626;
+  --afas-amber:     #d97706;
+  --afas-border:    var(--color-border-primary, #e2e8f0);
+  --afas-bg:        var(--color-background-primary, #fff);
+  --afas-bg2:       var(--color-background-secondary, #f8fafc);
+  --afas-text:      var(--color-text-primary, #1e293b);
+  --afas-text2:     var(--color-text-secondary, #64748b);
+  --radius:         6px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  font-size: 13px;
+  background: var(--afas-bg);
+  color: var(--afas-text);
+  min-height: 100vh;
+}
+
+#app {
+  display: none;
+  flex-direction: column;
+  gap: 0;
+  min-height: 100vh;
+}
+#app.loaded { display: flex; }
+
+/* ── Header ─────────────────────────────────────────────────────────────────── */
+#afas-header {
+  background: var(--afas-blue);
+  color: #fff;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.afas-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+.afas-logo-icon {
+  color: #7ec8e3;
+  font-size: 14px;
+}
+
+.header-title {
+  flex: 1;
+  min-width: 0;
+}
+.header-title h1 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+#rapport-periode {
+  font-size: 11px;
+  color: #b3cfe8;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.afas-select {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: var(--radius);
+  color: #fff;
+  padding: 5px 28px 5px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+.afas-select option { background: var(--afas-blue); color: #fff; }
+.afas-select:focus { outline: none; border-color: #7ec8e3; }
+
+/* ── KPI cards ───────────────────────────────────────────────────────────────── */
+.kpi-grid {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--afas-accent, #e8f0f8);
+  border-bottom: 1px solid var(--afas-border);
+  flex-wrap: wrap;
+}
+
+.kpi-card {
+  background: var(--afas-bg);
+  border: 1px solid var(--afas-border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  flex: 1;
+  min-width: 130px;
+  max-width: 200px;
+}
+.kpi-card.kpi-warn { border-left: 3px solid var(--afas-amber); }
+.kpi-card.kpi-info { border-left: 3px solid var(--afas-blue-light); }
+.kpi-label { font-size: 11px; color: var(--afas-text2); margin-bottom: 4px; }
+.kpi-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--afas-blue);
+  line-height: 1;
+}
+.kpi-sub { font-size: 11px; color: var(--afas-text2); margin-top: 2px; }
+
+/* ── Bar chart ───────────────────────────────────────────────────────────────── */
+.chart-section {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--afas-border);
+  background: var(--afas-bg);
+}
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--afas-text);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.afd-chart { display: flex; flex-direction: column; gap: 8px; }
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.bar-label {
+  width: 90px;
+  font-size: 12px;
+  color: var(--afas-text2);
+  flex-shrink: 0;
+  text-align: right;
+}
+.bar-track {
+  flex: 1;
+  height: 18px;
+  background: var(--afas-bg2);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--afas-border);
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+  opacity: 0.85;
+}
+.bar-fill.bar-warn { opacity: 1; }
+.bar-value {
+  width: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: right;
+  flex-shrink: 0;
+}
+.bar-sub {
+  width: 50px;
+  font-size: 11px;
+  color: var(--afas-text2);
+  flex-shrink: 0;
+}
+
+/* ── Table ───────────────────────────────────────────────────────────────────── */
+.table-section {
+  padding: 16px 20px;
+  flex: 1;
+  background: var(--afas-bg);
+}
+
+.row-count {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--afas-text2);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--afas-border);
+  border-radius: var(--radius);
+}
+
+.afas-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.afas-table thead {
+  background: var(--afas-blue);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.afas-table th {
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+.afas-table th:hover { background: var(--afas-blue-light); }
+.afas-table th[data-dir="asc"]::after  { content: " ↑"; opacity: 0.8; }
+.afas-table th[data-dir="desc"]::after { content: " ↓"; opacity: 0.8; }
+.afas-table .num-col { text-align: right; }
+
+.afas-table tbody tr {
+  border-bottom: 1px solid var(--afas-border);
+  transition: background 0.1s;
+}
+.afas-table tbody tr:hover { background: var(--afas-accent, #e8f0f8); }
+.afas-table tbody tr:last-child { border-bottom: none; }
+
+.afas-table td {
+  padding: 7px 12px;
+  vertical-align: middle;
+}
+
+.mono { font-family: monospace; color: var(--afas-text2); font-size: 11px; }
+.naam-cell { font-weight: 500; }
+.functie-cell { color: var(--afas-text2); font-size: 11px; }
+.empty-row { text-align: center; color: var(--afas-text2); padding: 32px !important; }
+
+/* Afdeling badge */
+.afd-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 99px;
+  border: 1px solid;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Verlofsoort badge */
+.soort-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  white-space: nowrap;
+  background: var(--afas-bg2);
+  border: 1px solid var(--afas-border);
+}
+.soort-badgeVakantie    { background: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
+.soort-badgeADV         { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+.soort-badgeBijzonderverlof { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+.soort-badgeZorgverlof  { background: #fdf2f8; color: #9d174d; border-color: #fbcfe8; }
+.soort-badgeCompensatieuren { background: #ede9fe; color: #5b21b6; border-color: #ddd6fe; }
+
+/* Saldo kleuren */
+.saldo-ok   { color: var(--afas-green); }
+.saldo-hoog { color: var(--afas-amber); }
+.saldo-neg  { color: var(--afas-red); }
+.warn-cell  { color: var(--afas-amber); font-weight: 600; }
+
+/* Loading / error */
+.loading-state,
+.error-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--afas-text2);
+  font-size: 14px;
+}
+.error-state { color: var(--afas-red); }
+
+/* Dark mode tweaks */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --afas-accent: #1e293b;
+  }
+  .afas-table thead { background: #1e3a5f; }
+  .afas-table th:hover { background: #254d80; }
+}
