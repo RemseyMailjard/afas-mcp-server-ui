@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>AFAS – Verlof Ranking Dashboard</title>
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header id="ranking-header">
+      <div class="afas-logo">
+        <span class="afas-logo-icon">&#9632;</span>
+        <span class="afas-logo-text">AFAS</span>
+      </div>
+      <div class="header-title">
+        <h1>Verlof Ranking Dashboard</h1>
+        <span id="rapport-periode">Boekjaar 2025</span>
+      </div>
+      <div class="header-actions">
+        <select id="filter-afdeling" class="afas-select">
+          <option value="">Alle afdelingen</option>
+          <option value="Sales">Sales</option>
+          <option value="IT">IT</option>
+          <option value="Finance">Finance</option>
+          <option value="HR">HR</option>
+          <option value="Operations">Operations</option>
+          <option value="Marketing">Marketing</option>
+        </select>
+        <select id="filter-soort" class="afas-select">
+          <option value="Vakantie">Vakantie</option>
+          <option value="ADV">ADV</option>
+          <option value="Bijzonder verlof">Bijzonder verlof</option>
+          <option value="Zorgverlof">Zorgverlof</option>
+          <option value="Compensatie-uren">Compensatie-uren</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- KPI row -->
+    <section id="kpi-section" class="kpi-row"></section>
+
+    <!-- Two-column main area -->
+    <div class="main-grid">
+
+      <!-- Left: Employee ranking chart -->
+      <section class="panel ranking-panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Medewerker Ranking</h2>
+          <span id="soort-label" class="soort-label">Vakantie-uren resterend</span>
+        </div>
+        <div id="ranking-chart" class="ranking-chart"></div>
+      </section>
+
+      <!-- Right: two smaller panels stacked -->
+      <div class="right-col">
+
+        <!-- Afdeling vergelijking -->
+        <section class="panel afdeling-panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Afdeling vergelijking</h2>
+            <span class="panel-sub">gemiddeld saldo per afdeling</span>
+          </div>
+          <div id="afd-chart" class="afd-chart"></div>
+        </section>
+
+        <!-- Risico-signalering -->
+        <section class="panel risk-panel">
+          <div class="panel-header">
+            <h2 class="panel-title">&#9888; Verloopt einde jaar</h2>
+            <span class="panel-sub">uren die vervallen als niet opgenomen</span>
+          </div>
+          <div id="risk-list" class="risk-list"></div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- Podium / Top-3 -->
+    <section class="panel podium-section">
+      <div class="panel-header">
+        <h2 class="panel-title">Podium – hoogste vakantiesaldo</h2>
+        <span class="panel-sub">top 3 medewerkers met meeste uren open</span>
+      </div>
+      <div id="podium" class="podium"></div>
+    </section>
+
+    <!-- Loading / error -->
+    <div id="loading" class="loading-state">Dashboard laden...</div>
+    <div id="error-state" class="error-state" style="display:none"></div>
+  </div>
+
+  <script type="module" src="/src/verlof-ranking.ts"></script>
+</body>
+</html>

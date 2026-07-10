@@ -14,7 +14,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc --noEmit && cross-env INPUT=mcp-app.html vite build && cross-env INPUT=afas-verlof.html vite build && cross-env INPUT=verlofkaart.html vite build && tsc -p tsconfig.server.json && npx esbuild server.ts --bundle --outdir=dist --platform=node --format=esm --packages=external && npx esbuild main.ts --bundle --outfile=dist/index.js --platform=node --format=esm --packages=external --external:./server.js",
+    "build": "tsc --noEmit && cross-env INPUT=mcp-app.html vite build && cross-env INPUT=afas-verlof.html vite build && cross-env INPUT=verlofkaart.html vite build && cross-env INPUT=verlof-ranking.html vite build && tsc -p tsconfig.server.json && npx esbuild server.ts --bundle --outdir=dist --platform=node --format=esm --packages=external && npx esbuild main.ts --bundle --outfile=dist/index.js --platform=node --format=esm --packages=external --external:./server.js",
     "watch": "cross-env INPUT=mcp-app.html vite build --watch",
     "serve:http": "node dist/index.js",
     "serve:stdio": "node dist/index.js --stdio",

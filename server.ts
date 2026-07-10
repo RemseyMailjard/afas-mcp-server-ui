@@ -274,5 +274,53 @@ export function createServer(): McpServer {
     );
   }
 
+  // ─── AFAS Verlof Ranking Dashboard ─────────────────────────────────────────
+  {
+    const rankingResourceUri = "ui://customer-segmentation/verlof-ranking.html";
+
+    registerAppTool(
+      server,
+      "get-verlof-ranking",
+      {
+        title: "AFAS Verlof Ranking Dashboard",
+        description:
+          "Visualiseert het verlofsaldo als visuele ranking: gesorteerde medewerker-barchart, afdeling-vergelijking, risico-signalering en podium van hoogste saldi. Optioneel filteren op afdeling.",
+        inputSchema: {
+          afdeling: z
+            .enum(["All", ...AFDELINGEN])
+            .optional()
+            .describe("Filter op afdeling (standaard: alle afdelingen)"),
+        },
+        _meta: { ui: { resourceUri: rankingResourceUri } },
+      },
+      async ({ afdeling }): Promise<CallToolResult> => {
+        const data = getVerlofData(afdeling);
+        return {
+          content: [{ type: "text", text: JSON.stringify(data) }],
+          structuredContent: data,
+        };
+      },
+    );
+
+    registerAppResource(
+      server,
+      rankingResourceUri,
+      rankingResourceUri,
+      {
+        mimeType: RESOURCE_MIME_TYPE,
+        description: "AFAS Verlof Ranking Dashboard UI",
+      },
+      async (): Promise<ReadResourceResult> => {
+        const html = await fs.readFile(
+          path.join(DIST_DIR, "verlof-ranking.html"),
+          "utf-8",
+        );
+        return {
+          contents: [{ uri: rankingResourceUri, mimeType: RESOURCE_MIME_TYPE, text: html }],
+        };
+      },
+    );
+  }
+
   return server;
 }
